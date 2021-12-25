@@ -9,6 +9,9 @@ class user
 	int id;
 	bool operation; // false is read, true is write
 
+	// default constructor for use in heap
+	user() :id(0), operation(false) {}
+
 public:
 	// constructor of class
 	user(int temp_id, bool temp_op) :id(temp_id), operation(temp_op) {}
@@ -50,7 +53,7 @@ class heap
 public:
 	heap() :capacity(1), totalitems(0)
 	{
-		arr.resize(1); // resizing vector to minmum
+		this->arr.resize(1); // resizing vector to minmum
 	}
 	~heap()
 	{
@@ -62,29 +65,37 @@ public:
 		return(this->totalitems == 0); // returns true if no items are present
 	}
 
-	void insert(k key, v value)
+	void insert(k const key, v const value)
 	{
 		if (this->totalitems == this->capacity) // code to grow heap if capacity reached
 		{
 			this->capacity *= 2;
-			this->arr.resize(capcaity); // resizing array to accomodate
+			this->arr.resize(this->capacity); // resizing array to accomodate
 		}
 
 		// code to insert key value pair in accordance with keys
 
 		// validating and updating minimum variable
-		if (this->capacity == 0)
-			this->minItem = heapItem<k,v>(key, value);
+		if (this->totalitems == 0)
+		{
+			this->minItem.key = key;
+			this->minItem.value = value;
+		}
 		else
 		{
-			if(key<this->minItem.key)
-				this->minItem = heapItem<k, v>(key, value);
+			if (key < this->minItem.key)
+			{
+				this->minItem.key = key;
+				this->minItem.value = value;
+			}
 		}
-		this->arr[totalitems++] = heapItem<k, v>(key, value); // adding new item to last of heap
+		// adding new user to last of array
+		this->arr[this->totalitems].key = key;
+		this->arr[this->totalitems++].value = value;
 
 		// reheaping to maximum heap
 		int i = this->totalitems - 1; // pointing to last element
-		while (i != 0 && (arr[(i - 1) / 2].key > arr[i].key))
+		while (i != 0 && (arr[(i - 1) / 2].key < arr[i].key))
 		{
 			swap(this->arr[i], this->arr[(i - 1) / 2]);
 			i = (i - 1) / 2; // updating pointer to parent
