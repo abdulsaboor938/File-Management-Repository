@@ -65,6 +65,11 @@ public:
 		return(this->totalitems == 0); // returns true if no items are present
 	}
 
+	void buildQueue(vector<heapItem<k, v>> temp_arr)
+	{
+		int size=
+	}
+
 	v findMin()
 	{
 		assert(this->totalitems > 0);
@@ -104,37 +109,39 @@ public:
 		this->arr[this->totalitems++].value = value;
 		reheapup(this->totalitems - 1); // reheaping upwards from inserted item
 	}
-	void deleteMax()
+	v extractMax()
 	{
 		assert(this->totalitems > 0);
 		swap(arr[0], arr[--this->totalitems]);
-		reheapdown(0);
+		reheapdown(0,totalitems);
+		return arr[totalitems].value;
+
 	}
 
-	void reheapup(int index)
+	void reheapup(vector<heapItem<k, v>> temp_arr,int index)
 	{
 		// reheaping to maximum heap
-		while (index != 0 && (arr[(index - 1) / 2].key < arr[index].key))
+		while (index != 0 && (temp_arr[(index - 1) / 2].key < temp_arr[index].key))
 		{
-			swap(this->arr[index], this->arr[(index - 1) / 2]);
+			swap(this->temp_arr[index], this->temp_arr[(index - 1) / 2]);
 			index = (index - 1) / 2; // updating pointer to parent
 		}
 	}
-	void reheapdown(int index)
+	void reheapdown(vector<heapItem<k,v>> temp_arr,int index, int size)
 	{
-		while (index < (this->totalitems - 1))
+		while (index < (size-1))
 		{
-			if (arr[index].key < min(arr[(index * 2) + 1].key, arr[(index * 2) + 2].key))
+			if (temp_arr[index].key < min(temp_arr[(index * 2) + 1].key, temp_arr[(index * 2) + 2].key))
 			{
 				// if left child is greater than left
-				if (arr[(index * 2) + 1].key > arr[(index * 2) + 2].key)
+				if (temp_arr[(index * 2) + 1].key > temp_arr[(index * 2) + 2].key)
 				{
-					swap(arr[(index * 2) + 1], arr[index]);
+					swap(temp_arr[(index * 2) + 1], temp_arr[index]);
 					index = ((index * 2) + 1);
 				}
 				else // if right child is greater than right
 				{
-					swap(arr[(index * 2) + 2], arr[index]);
+					swap(temp_arr[(index * 2) + 2], temp_arr[index]);
 					index = ((index * 2) + 2);
 
 				}

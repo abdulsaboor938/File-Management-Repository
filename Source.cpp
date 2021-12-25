@@ -14,7 +14,8 @@ int main()
 	h1.insert(8, u1);
 	h1.insert(1, u2);
 	h1.insert(7, u1);
-	h1.deleteMax();
+	u1 = h1.extractMax();
+	cout << u1;
 
 	u1 = h1.findMax();
 	cout << u1;
