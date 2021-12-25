@@ -65,9 +65,10 @@ public:
 		return(this->totalitems == 0); // returns true if no items are present
 	}
 
-	void buildQueue(vector<heapItem<k, v>> temp_arr)
+	void buildQueue(vector<heapItem<k, v>> &temp_arr)
 	{
-		int size=
+		int size = temp_arr.size();
+		for(int i=(size/2))
 	}
 
 	v findMin()
@@ -107,29 +108,29 @@ public:
 		// adding new user to last of array
 		this->arr[this->totalitems].key = key;
 		this->arr[this->totalitems++].value = value;
-		reheapup(this->totalitems - 1); // reheaping upwards from inserted item
+		reheapup(this->arr,this->totalitems - 1); // reheaping upwards from inserted item
 	}
 	v extractMax()
 	{
 		assert(this->totalitems > 0);
 		swap(arr[0], arr[--this->totalitems]);
-		reheapdown(0,totalitems);
+		reheapdown(this->arr, 0,this->totalitems);
 		return arr[totalitems].value;
 
 	}
 
-	void reheapup(vector<heapItem<k, v>> temp_arr,int index)
+	void reheapup(vector<heapItem<k, v>> &temp_arr,int index)
 	{
 		// reheaping to maximum heap
 		while (index != 0 && (temp_arr[(index - 1) / 2].key < temp_arr[index].key))
 		{
-			swap(this->temp_arr[index], this->temp_arr[(index - 1) / 2]);
+			swap(temp_arr[index], temp_arr[(index - 1) / 2]);
 			index = (index - 1) / 2; // updating pointer to parent
 		}
 	}
-	void reheapdown(vector<heapItem<k,v>> temp_arr,int index, int size)
+	void reheapdown(vector<heapItem<k,v>> &temp_arr,int index, int size)
 	{
-		while (index < (size-1))
+		while (index < size)
 		{
 			if (temp_arr[index].key < min(temp_arr[(index * 2) + 1].key, temp_arr[(index * 2) + 2].key))
 			{
