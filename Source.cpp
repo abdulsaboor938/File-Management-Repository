@@ -15,6 +15,12 @@ int main()
 	h1.insert(1, u2);
 	h1.insert(7, u1);
 	u1 = h1.extractMax();
+	u1 = h1.extractMax();
+	u1 = h1.extractMax();
+	u1 = h1.extractMax();
+	u1 = h1.extractMax();
+	u1 = h1.extractMax();
+	h1.insert(2, u1);
 	cout << u1;
 
 	u1 = h1.findMax();

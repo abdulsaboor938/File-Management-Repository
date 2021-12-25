@@ -68,7 +68,7 @@ public:
 	}
 	int heapsize()
 	{
-		return this->capacity;
+		return this->totalitems;
 	}
 
 	void buildQueue(vector<heapItem<k, v>>& temp_arr, int size)
@@ -121,8 +121,13 @@ public:
 		assert(this->totalitems > 0);
 		swap(arr[0], arr[--this->totalitems]);
 		reheapdown(this->arr, 0,this->totalitems-1);
+		// code to shrink array
+		if (this->capacity / 2 > this->totalitems)
+		{
+			this->arr.resize(this->capacity / 2);
+			this->capacity /= 2;
+		}
 		return arr[totalitems].value;
-
 	}
 
 	void reheapup(vector<heapItem<k,v>> &data,int root, int last)
