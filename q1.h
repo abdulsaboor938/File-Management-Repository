@@ -35,6 +35,7 @@ public:
 template<class k, class v>
 class heapItem
 {
+public:
 	k key;
 	v value;
 
@@ -65,10 +66,10 @@ public:
 		return(this->totalitems == 0); // returns true if no items are present
 	}
 
-	void buildQueue(vector<heapItem<k, v>> &temp_arr)
+	void buildQueue(vector<heapItem<k, v>>& temp_arr, int size)
 	{
-		int size = temp_arr.size();
-		for(int i=(size/2))
+		for (int i = (size / 2) - 1; i >= 0; i--)
+			reheapdown(temp_arr, i, size);
 	}
 
 	v findMin()
@@ -132,6 +133,8 @@ public:
 	{
 		while (index < size)
 		{
+			if (((index * 2) + 1 >= size) || ((index * 2) + 2 >= size))
+				return;
 			if (temp_arr[index].key < min(temp_arr[(index * 2) + 1].key, temp_arr[(index * 2) + 2].key))
 			{
 				// if left child is greater than left
@@ -147,8 +150,12 @@ public:
 
 				}
 			}
-			else
-				break;
 		}
+	}
+
+	// helper function for buildQueue function
+	vector<heapItem<k, v>>& getArr()
+	{
+		return this->arr;
 	}
 };
