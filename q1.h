@@ -35,6 +35,7 @@ public:
 template<class k, class v>
 class heapItem
 {
+	// public for making an array in main
 public:
 	k key;
 	v value;
@@ -64,6 +65,10 @@ public:
 	bool isEmpty()
 	{
 		return(this->totalitems == 0); // returns true if no items are present
+	}
+	int heapsize()
+	{
+		return this->capacity;
 	}
 
 	void buildQueue(vector<heapItem<k, v>>& temp_arr, int size)
@@ -109,53 +114,46 @@ public:
 		// adding new user to last of array
 		this->arr[this->totalitems].key = key;
 		this->arr[this->totalitems++].value = value;
-		reheapup(this->arr,this->totalitems - 1); // reheaping upwards from inserted item
+		reheapup(this->arr,0,this->totalitems - 1); // reheaping upwards from inserted item
 	}
 	v extractMax()
 	{
 		assert(this->totalitems > 0);
 		swap(arr[0], arr[--this->totalitems]);
-		reheapdown(this->arr, 0,this->totalitems);
+		reheapdown(this->arr, 0,this->totalitems-1);
 		return arr[totalitems].value;
 
 	}
 
-	void reheapup(vector<heapItem<k, v>> &temp_arr,int index)
+	void reheapup(vector<heapItem<k,v>> &data,int root, int last)
 	{
-		// reheaping to maximum heap
-		while (index != 0 && (temp_arr[(index - 1) / 2].key < temp_arr[index].key))
-		{
-			swap(temp_arr[index], temp_arr[(index - 1) / 2]);
-			index = (index - 1) / 2; // updating pointer to parent
+		int parent;
+		if (last > root) { // tree is not empty
+			parent = (last - 1) / 2;
+			if (data[parent].key < data[last].key) {
+				swap(data[parent], data[last]);
+				reheapup(data,root, parent);
+			}
 		}
 	}
-	void reheapdown(vector<heapItem<k,v>> &temp_arr,int index, int size)
-	{
-		while (index < size)
-		{
-			if (((index * 2) + 1 >= size) || ((index * 2) + 2 >= size))
-				return;
-			if (temp_arr[index].key < min(temp_arr[(index * 2) + 1].key, temp_arr[(index * 2) + 2].key))
-			{
-				// if left child is greater than left
-				if (temp_arr[(index * 2) + 1].key > temp_arr[(index * 2) + 2].key)
-				{
-					swap(temp_arr[(index * 2) + 1], temp_arr[index]);
-					index = ((index * 2) + 1);
-				}
-				else // if right child is greater than right
-				{
-					swap(temp_arr[(index * 2) + 2], temp_arr[index]);
-					index = ((index * 2) + 2);
-
-				}
+	void reheapdown(vector<heapItem<k,v>> &data,int cnode, int last) {
+		int maxChild, rightChild, leftChild;
+		leftChild = 2 * cnode + 1;
+		rightChild = 2 * cnode + 2;
+		if (leftChild <= last) { // left child is part of the heap
+			if (leftChild == last) // only one child
+				maxChild = leftChild;
+			else {
+				if (data[leftChild].key <= data[rightChild].key)
+					maxChild = rightChild;
+				else
+					maxChild = leftChild;
+			}
+			if (data[cnode].key < data[maxChild].key) {
+				swap(data[cnode], data[maxChild]);
+				reheapdown(data,maxChild, last);
 			}
 		}
 	}
 
-	// helper function for buildQueue function
-	vector<heapItem<k, v>>& getArr()
-	{
-		return this->arr;
-	}
 };
