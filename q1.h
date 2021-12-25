@@ -48,7 +48,7 @@ class heap
 	vector<heapItem<k, v>> arr;
 	int capacity;
 	int totalitems;
-	heapItem<k, v> minItem; // variable to maintain minimum priority user
+	heapItem<k,v> minItem; // variable to maintain minimum priority user
 
 public:
 	heap() :capacity(1), totalitems(0)
@@ -65,6 +65,17 @@ public:
 		return(this->totalitems == 0); // returns true if no items are present
 	}
 
+	v findMin()
+	{
+		assert(this->totalitems > 0);
+		return this->minItem.value;
+	}
+	v findMax()
+	{
+		assert(this->totalitems > 0);
+		return this->arr[0].value;
+	}
+
 	void insert(k const key, v const value)
 	{
 		if (this->totalitems == this->capacity) // code to grow heap if capacity reached
@@ -72,8 +83,6 @@ public:
 			this->capacity *= 2;
 			this->arr.resize(this->capacity); // resizing array to accomodate
 		}
-
-		// code to insert key value pair in accordance with keys
 
 		// validating and updating minimum variable
 		if (this->totalitems == 0)
@@ -89,51 +98,49 @@ public:
 				this->minItem.value = value;
 			}
 		}
+
 		// adding new user to last of array
 		this->arr[this->totalitems].key = key;
 		this->arr[this->totalitems++].value = value;
-
-		// reheaping to maximum heap
-		int i = this->totalitems - 1; // pointing to last element
-		while (i != 0 && (arr[(i - 1) / 2].key < arr[i].key))
-		{
-			swap(this->arr[i], this->arr[(i - 1) / 2]);
-			i = (i - 1) / 2; // updating pointer to parent
-		}
+		reheapup(this->totalitems - 1); // reheaping upwards from inserted item
+	}
+	void deleteMax()
+	{
+		assert(this->totalitems > 0);
+		swap(arr[0], arr[--this->totalitems]);
+		reheapdown(0);
 	}
 
-	//void deleteMin()
-	//{
-	//	assert(this->totalitems > 0);
-	//	swap(arr->key, (arr + (totalitems - 1))->key);
-	//	swap(arr->value, (arr + (totalitems - 1))->value);
-	//	this->totalitems--;
+	void reheapup(int index)
+	{
+		// reheaping to maximum heap
+		while (index != 0 && (arr[(index - 1) / 2].key < arr[index].key))
+		{
+			swap(this->arr[index], this->arr[(index - 1) / 2]);
+			index = (index - 1) / 2; // updating pointer to parent
+		}
+	}
+	void reheapdown(int index)
+	{
+		while (index < (this->totalitems - 1))
+		{
+			if (arr[index].key < min(arr[(index * 2) + 1].key, arr[(index * 2) + 2].key))
+			{
+				// if left child is greater than left
+				if (arr[(index * 2) + 1].key > arr[(index * 2) + 2].key)
+				{
+					swap(arr[(index * 2) + 1], arr[index]);
+					index = ((index * 2) + 1);
+				}
+				else // if right child is greater than right
+				{
+					swap(arr[(index * 2) + 2], arr[index]);
+					index = ((index * 2) + 2);
 
-	//	int i = 0; // pointing to first element
-	//	while (i < (totalitems - 1))
-	//	{
-	//		if ((arr + i)->key > max((arr + ((i * 2) + 1))->key, (arr + ((i * 2) + 2))->key))
-	//		{
-	//			// if left child is lesser than left
-	//			if ((arr + ((i * 2) + 1))->key < (arr + ((i * 2) + 2))->key)
-	//			{
-	//				swap((arr + ((i * 2) + 1))->key, (arr + i)->key);
-	//				swap((arr + ((i * 2) + 1))->key, (arr + i)->key);
-	//				i = ((i * 2) + 1);
-	//			}
-	//			else // if right child is lesser than right
-	//			{
-	//				swap((arr + ((i * 2) + 2))->key, (arr + i)->key);
-	//				swap((arr + ((i * 2) + 2))->key, (arr + i)->key);
-	//				i = ((i * 2) + 2);
-
-	//			}
-	//		}
-	//	}
-	//}
-	//void getMin(v& _value)
-	//{
-	//	assert(this->totalitems > 0);
-	//	_value = this->arr->value;
-	//}
+				}
+			}
+			else
+				break;
+		}
+	}
 };

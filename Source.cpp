@@ -10,7 +10,16 @@ int main()
 	heap<int, user> h1;
 	h1.insert(2, u1);
 	h1.insert(4, u2);
-	h1.insert(1, u1);
+	h1.insert(6, u2);
+	h1.insert(8, u1);
+	h1.insert(1, u2);
+	h1.insert(7, u1);
+	h1.deleteMax();
+
+	u1 = h1.findMax();
+	cout << u1;
+	u1 = h1.findMin();
+	cout << u1;
 
 	system("pause");
 	return 0;
