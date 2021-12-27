@@ -15,7 +15,7 @@ class user
 public:
 	// constructor of class
 	user(int temp_id, bool temp_op) :id(temp_id), operation(temp_op) {}
-	friend ostream& operator<<(ostream& out, user& temp)
+	friend ostream& operator<<(ostream& out, user& temp) // stream output function
 	{
 		if (temp.operation == false)
 			out << "User ID : " << temp.id << ", wants to read from this file" << endl;
@@ -37,75 +37,81 @@ class heapItem
 {
 	// public for making an array in main
 public:
-	k key;
-	v value;
+	k key; // template variable to maintain key
+	v value; // template variable to maintain value
 
 	template<class k, class v>
-	friend class heap;
+	friend class heap; // making friend class for easier access
 };
 
 template<class k, class v>
 class heap
 {
-	vector<heapItem<k, v>> arr;
-	int capacity;
-	int totalitems;
+	vector<heapItem<k, v>> arr; // vector to maintain heap
+	int capacity; // variabel to maintain total capacity of vector
+	int totalitems; // variable to maintain total filled items of vector
 	heapItem<k,v> minItem; // variable to maintain minimum priority user
 
 public:
-	heap() :capacity(1), totalitems(0)
+	// class fucntions
+	heap() :capacity(1), totalitems(0) // default constructor of class
 	{
-		this->arr.resize(1); // resizing vector to minmum
+		this->arr.resize(1); // resizing vector to minmum value
 	}
-	~heap()
+	~heap() // destructor of class
 	{
 		arr.clear(); // clearig vector
-		this->totalitems = this->capacity = 0;
+		this->totalitems = this->capacity = 0; // clearing varaibles
 	}
 	bool isEmpty()
 	{
 		return(this->totalitems == 0); // returns true if no items are present
 	}
-	int heapsize()
+	int heapsize() // function to return current heapsize
 	{
 		return this->totalitems;
 	}
 
-	void buildQueue(vector<heapItem<k, v>>& temp_arr, int size)
+	// building queue function
+	void buildQueue(vector<heapItem<k, v>>& temp_arr, int size) // function to build queue from a given array
 	{
-		for (int i = (size / 2) - 1; i >= 0; i--)
-			reheapdown(temp_arr, i, size);
+		for (int i = (size / 2) - 1; i >= 0; i--) // loop from middle to first element
+			reheapdown(temp_arr, i, size); // reheaping each node
 	}
 
-	v findMin()
+	// finding max / min functions
+	heapItem<k,v> findMin() // function to give minimum value in O(1) time
 	{
-		assert(this->totalitems > 0);
-		return this->minItem.value;
+		assert(this->totalitems > 0); // assert to check for exceptions
+		return this->minItem; // returning minimum item
 	}
-	v findMax()
+	heapItem<k,v> findMax() // function to return maximum item in o(1) time
 	{
-		assert(this->totalitems > 0);
-		return this->arr[0].value;
+		assert(this->totalitems > 0); // checking for exceptions
+		return this->arr[0]; // returning maximum value
 	}
 
-	void insert(k const key, v const value)
+	// insertion / deletion functions
+	void insert(k const key, v const value) // function to insert an item in heap according to its priority
 	{
 		if (this->totalitems == this->capacity) // code to grow heap if capacity reached
 		{
-			this->capacity *= 2;
+			this->capacity *= 2; // doubling heap capacity
 			this->arr.resize(this->capacity); // resizing array to accomodate
 		}
 
 		// validating and updating minimum variable
-		if (this->totalitems == 0)
-		{
+		if (this->totalitems == 0) // if first insertion
+		{	
+			// updating minimum item
 			this->minItem.key = key;
 			this->minItem.value = value;
 		}
-		else
+		else // if not the first insertion
 		{
-			if (key < this->minItem.key)
+			if (key < this->minItem.key) // checking if minimum item
 			{
+				// updating minimum item
 				this->minItem.key = key;
 				this->minItem.value = value;
 			}
@@ -116,49 +122,54 @@ public:
 		this->arr[this->totalitems++].value = value;
 		reheapup(this->arr,0,this->totalitems - 1); // reheaping upwards from inserted item
 	}
-	v extractMax()
+	heapItem<k,v> extractMax() // function to find and remove maximum priority item from heap
 	{
-		assert(this->totalitems > 0);
-		swap(arr[0], arr[--this->totalitems]);
-		reheapdown(this->arr, 0,this->totalitems-1);
+		assert(this->totalitems > 0); // checking for exceptions
+		swap(arr[0], arr[--this->totalitems]); // swapping with minimum
+		reheapdown(this->arr, 0,this->totalitems-1); // reheaping down from top
 		// code to shrink array
-		if (this->capacity / 2 > this->totalitems)
+		if (this->capacity / 2 > this->totalitems) // checking if less than half is filled
 		{
-			this->arr.resize(this->capacity / 2);
-			this->capacity /= 2;
+			this->capacity /= 2; // reducing capacity
+			this->arr.resize(this->capacity); // resizing array
 		}
-		return arr[totalitems].value;
+		return arr[totalitems]; // returning maximum item
 	}
-
-	void reheapup(vector<heapItem<k,v>> &data,int root, int last)
+	
+	// reheaping functions
+	void reheapup(vector<heapItem<k,v>> &data,int root, int last) // recursive code to reheap up from a given node
 	{
 		int parent;
 		if (last > root) { // tree is not empty
 			parent = (last - 1) / 2;
-			if (data[parent].key < data[last].key) {
-				swap(data[parent], data[last]);
-				reheapup(data,root, parent);
+			if (data[parent].key < data[last].key)  // if parent is smaller
+			{
+				swap(data[parent], data[last]); // swapping from parent
+				reheapup(data,root, parent); // recursive call to parent
 			}
 		}
 	}
-	void reheapdown(vector<heapItem<k,v>> &data,int cnode, int last) {
-		int maxChild, rightChild, leftChild;
-		leftChild = 2 * cnode + 1;
-		rightChild = 2 * cnode + 2;
-		if (leftChild <= last) { // left child is part of the heap
-			if (leftChild == last) // only one child
+	void reheapdown(vector<heapItem<k,v>> &data,int cnode, int last) // recursive code to reheapdown from a given node
+	{
+		int maxChild, rightChild, leftChild; // local variables to check maximum child
+		leftChild = 2 * cnode + 1; // calculating left child
+		rightChild = 2 * cnode + 2; // calculating right child
+		if (leftChild <= last) // if left child is part of the heap
+		{
+			if (leftChild == last) // if only one child
 				maxChild = leftChild;
-			else {
-				if (data[leftChild].key <= data[rightChild].key)
+			else // if both child exist
+			{
+				if (data[leftChild].key <= data[rightChild].key) // if right child is greater than left
 					maxChild = rightChild;
-				else
+				else // if left child is greater than right
 					maxChild = leftChild;
 			}
-			if (data[cnode].key < data[maxChild].key) {
-				swap(data[cnode], data[maxChild]);
-				reheapdown(data,maxChild, last);
+			if (data[cnode].key < data[maxChild].key) // checking if child's data is less than parent
+			{
+				swap(data[cnode], data[maxChild]); // swapping with maximum child
+				reheapdown(data,maxChild, last); // recursive call from maximum child
 			}
 		}
 	}
-
 };
