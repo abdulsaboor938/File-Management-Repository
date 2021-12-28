@@ -196,7 +196,8 @@ public:
 			if (i->fileid == file_id)
 			{
 				cout << "file found" << endl;
-
+				if (i->currentuser.id == -1 && i->waitinglist == nullptr)
+					cout << "access granted" << endl;
 				return;
 			}
 		}
