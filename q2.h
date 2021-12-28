@@ -142,12 +142,13 @@ template<class k,class v>
 class hashitem
 {
 	k fileid; // variable to maintain fileid
-	v currentuser; // a variable to maintain current user accessing the file
+	list<v> currentuser; // a variable to maintain current user accessing the file
 	heap<int, v>* waitinglist; // pointer to the heap of waiting users
 
 public:
-	hashitem() :fileid(),currentuser(v()) // default constructor
+	hashitem() :fileid() // default constructor
 	{
+		this->currentuser.clear();
 		this->waitinglist = nullptr;
 	}
 	template<class k,class v>
@@ -196,9 +197,9 @@ public:
 			if (i->fileid == file_id) // checking if file ids match
 			{
 				cout << "file found" << endl;
-				if (i->currentuser.id == -1 && i->waitinglist == nullptr) // if first user
+				if (i->currentuser.empty() && i->waitinglist == nullptr) // if first user
 				{
-					i->currentuser = temp_user;
+					i->currentuser.push_back(temp_user);
 					cout << "access granted" << endl; // giving access to user
 				}
 				else
