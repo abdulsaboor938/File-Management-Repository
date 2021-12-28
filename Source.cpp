@@ -52,6 +52,7 @@ int main()
 	h1.insert(3);
 	h1.insert(14);
 	h1.requestFile(3, user(12,false), 2);
+	h1.requestFile(3, user(12,false), 2);
 	system("pause");
 	return 0;
 }

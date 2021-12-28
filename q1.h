@@ -52,7 +52,7 @@ template<class k, class v>
 class heap
 {
 	vector<heapItem<k, v>> arr; // vector to maintain heap
-	int capacity; // variabel to maintain total capacity of vector
+	int capacity; // variable to maintain total capacity of vector
 	int totalitems; // variable to maintain total filled items of vector
 	heapItem<k,v> minItem; // variable to maintain minimum priority user
 

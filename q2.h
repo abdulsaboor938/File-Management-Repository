@@ -189,15 +189,25 @@ public:
 	{
 		// -1 priority is highest
 		// -2 priority is lowest
-		int index = file_id % this->hasharr.size();
-		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin();
-		for (; i != this->hasharr[index].end(); i++)
+		int index = file_id % this->hasharr.size(); // calculating index of hashtable
+		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
+		for (; i != this->hasharr[index].end(); i++) // loop in list
 		{
-			if (i->fileid == file_id)
+			if (i->fileid == file_id) // checking if file ids match
 			{
 				cout << "file found" << endl;
-				if (i->currentuser.id == -1 && i->waitinglist == nullptr)
+				if (i->currentuser.id == -1 && i->waitinglist == nullptr) // if first user
+				{
+					i->currentuser = temp_user;
 					cout << "access granted" << endl;
+				}
+				else
+				{
+					if (i->waitinglist == nullptr) // if waiting queue is empty
+						i->waitinglist = new heap<int, v>(); // assigning a heap
+					i->waitinglist->insert(temp_priority, temp_user);
+					cout << "addded to queue" << endl;
+				}
 				return;
 			}
 		}
