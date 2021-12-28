@@ -137,30 +137,32 @@
 //#endif
 
 // definition of hashitem class
-template<class v>
+// k is type of ifle id, whereas v is type of priority queue
+template<class k,class v>
 class hashitem
 {
-	v fileid; // variable to maintain fileid
-	user currentuser; // a variable to maintain current user accessing the file
-	heap<int, user>* waitinglist; // pointer to the heap of waiting users
+	k fileid; // variable to maintain fileid
+	v currentuser; // a variable to maintain current user accessing the file
+	heap<int, v>* waitinglist; // pointer to the heap of waiting users
 
 public:
-	hashitem() :currentuser(user()) // default constructor
+	hashitem() :fileid(),currentuser(v()) // default constructor
 	{
 		this->waitinglist = nullptr;
 	}
-	template<class v>
+	template<class k,class v>
 	friend class hashmap;
 };
 
 // definition of hashhing class
-template<class v>
+// k is type of ifle id, whereas v is type of priority queue
+template<class k,class v>
 class hashmap
 {
-	vector<list<hashitem<v>>*> hasharr; // vector to maintain hashtable of all the files
+	vector<list<hashitem<k,v>>> hasharr; // vector to maintain hashtable of all the files
 
 public:
-	hashmap(int t_size)
+	hashmap(int t_size) // overloaded constructor
 	{
 		while (t_size < 1)
 		{
@@ -168,8 +170,19 @@ public:
 			cin >> t_size;
 		}
 		this->hasharr.resize(t_size); // resizing vector to defined size
-		for (int i = 0; i < t_size; i++) // updating all elements to nullptr initially
-			this->hasharr[i] = nullptr;
 	}
 
+	// insertion of a file into hash table
+	void insert(k file_id)
+	{
+		while (file_id < 0)
+		{
+			cout << "Input FileID (>0): ";
+			cin >> file_id;
+		}
+		hashitem<k,v> temp;
+		temp.fileid = file_id;
+		temp.waitinglist = nullptr;
+		this->hasharr[(file_id % this->hasharr.size())].push_back(temp);
+	}
 };

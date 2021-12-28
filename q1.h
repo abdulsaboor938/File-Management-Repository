@@ -10,7 +10,7 @@ class user
 	bool operation; // false is read, true is write
 
 	// default constructor for use in heap
-	user() :id(0), operation(false) {}
+	user() :id(-1), operation(false) {}
 
 public:
 	// constructor of class
@@ -29,6 +29,10 @@ public:
 	friend class heapItem;
 	template<class k, class v>
 	friend class heap;
+	template<class k,class v>
+	friend class hashitem;
+	template<class k, class v>
+	friend class hashmap;
 };
 
 // definition of heap class

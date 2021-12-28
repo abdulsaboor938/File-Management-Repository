@@ -48,7 +48,9 @@ using namespace std;
 int main()
 {
 	cout << "hello world" << endl;
-	hashmap<user> h1(11);
+	hashmap <int,user>h1(11);
+	h1.insert(3);
+	h1.insert(14);
 	system("pause");
 	return 0;
 }
