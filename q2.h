@@ -226,4 +226,5 @@ public:
 		}
 		cout << "file not found" << endl;
 	}
+	void printTable();
 };
