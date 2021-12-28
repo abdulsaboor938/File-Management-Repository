@@ -173,9 +173,9 @@ public:
 		this->hasharr.resize(t_size); // resizing vector to defined size
 	}
 
-	// insertion of a file into hash table
 	void insert(k file_id)
 	{
+		// insertion of a file into hash table
 		while (file_id < 0)
 		{
 			cout << "Input FileID (>0): ";
@@ -188,6 +188,7 @@ public:
 	}
 	void requestAccess(k file_id, v temp_user, k temp_priority)
 	{
+		// This function adds users in hashtable far accessing a file
 		// -1 priority is highest
 		// -2 priority is lowest
 		int index = file_id % this->hasharr.size(); // calculating index of hashtable
@@ -196,11 +197,10 @@ public:
 		{
 			if (i->fileid == file_id) // checking if file ids match
 			{
-				cout << "file found" << endl;
+				// file is found at this point
 				if (i->currentuser.empty() && i->waitinglist == nullptr) // if first user
 				{
-					i->currentuser.push_back(temp_user);
-					cout << "access granted" << endl; // giving access to user
+					i->currentuser.push_back(temp_user); // giving access to user
 				}
 				else
 				{
@@ -217,20 +217,20 @@ public:
 					{
 						heapItem<k, v> temp;
 						temp = i->waitinglist->findMin();
-						i->waitinglist->insert(temp.key - 1, temp_user);
+						i->waitinglist->insert(temp.key - 1, temp_user); // inserting with maximum priority
 					}
-					else
-						i->waitinglist->insert(temp_priority, temp_user);
+					else // if minimum priority
+						i->waitinglist->insert(temp_priority, temp_user); // inserting with minimum priority
 				}
 				return; // returning after operation
 			}
 		}
-		cout << "file not found" << endl;
+		cout << "\nFile with id: "<<file_id<<" not found\n" << endl;
 	}
 	void printTable()
 	{
-		typename list<hashitem<k, v>>::iterator obj; // iterator for traversing array
 		// This function prints hashmap
+		typename list<hashitem<k, v>>::iterator obj; // iterator for traversing array
 		cout << "Current Repository" << endl;
 		cout << "********************************************" << endl;
 		for (int i = 0; i < this->hasharr.size(); i++)
@@ -239,9 +239,13 @@ public:
 			{
 				for (obj = this->hasharr[i].begin(); obj != this->hasharr[i].end(); obj++)
 				{
-					cout << "H" << i + 1 << "-> File" << obj->fileid << " ... \n\tAccess granted to ";
-					if (obj->currentuser.empty())
+					cout << "H" << i + 1 << "-> File:" << obj->fileid << " ... \n\tAccess granted to ";
+					if (obj->currentuser.empty()) // if no user has access
+					{
 						cout << "None" << endl;
+						cout << "\tNext User: None" << endl;
+						cout << "\tWaiting: None" << endl;
+					}
 					else
 					{
 						// printing current user's vector in case access granted to multiple users
@@ -257,14 +261,14 @@ public:
 						}
 						cout << endl;
 
-						// code to print next user
+						// code to print next user from priority queue
 						cout << "\tNext User: ";
-						if (obj->waitinglist->isEmpty()) // checking if empty list
+						if (obj->waitinglist->isEmpty()) // checking if empty queue
 						{
 							cout << "None" << endl;
 							cout << "\tWaiting: None" << endl;
 						}
-						else // if not empty
+						else // if queue is not empty
 						{
 							v temp_v = obj->waitinglist->findMax().value; // temporary object of type v
 							cout << temp_v.id << ", ";
