@@ -137,7 +137,7 @@
 //#endif
 
 // definition of hashitem class
-// k is type of ifle id, whereas v is type of priority queue
+// k is type of file id, whereas v is type of priority queue
 template<class k,class v>
 class hashitem
 {
@@ -155,7 +155,7 @@ public:
 };
 
 // definition of hashhing class
-// k is type of ifle id, whereas v is type of priority queue
+// k is type of file id, whereas v is type of priority queue
 template<class k,class v>
 class hashmap
 {
@@ -184,5 +184,22 @@ public:
 		temp.fileid = file_id;
 		temp.waitinglist = nullptr;
 		this->hasharr[(file_id % this->hasharr.size())].push_back(temp);
+	}
+	void requestFile(k file_id, v temp_user, int temp_priority)
+	{
+		// -1 priority is highest
+		// -2 priority is lowest
+		int index = file_id % this->hasharr.size();
+		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin();
+		for (; i != this->hasharr[index].end(); i++)
+		{
+			if (i->fileid == file_id)
+			{
+				cout << "file found" << endl;
+
+				return;
+			}
+		}
+		cout << "file not found" << endl;
 	}
 };
