@@ -9,12 +9,16 @@ using namespace std;
 //
 //	heap<int, user> h1,h2;
 //	heapItem<int, user> utemp;
+//	utemp = h1.findMax();
+//	utemp = h1.extractMax();
 //	h1.insert(2, u1);
 //	h1.insert(4, u2);
 //	h1.insert(6, u2);
 //	h1.insert(8, u1);
 //	h1.insert(1, u2);
 //	h1.insert(7, u1);
+//	utemp = h1.findMax();
+//	utemp = h1.findMin();
 //	utemp = h1.extractMax();
 //	utemp = h1.extractMax();
 //	utemp = h1.extractMax();
@@ -51,8 +55,11 @@ int main()
 	hashmap <int,user>h1(11);
 	h1.insert(3);
 	h1.insert(14);
-	h1.requestFile(3, user(12,false), 2);
-	h1.requestFile(3, user(12,false), 2);
+	h1.requestAccess(3, user(12,false), 2);
+	h1.requestAccess(3, user(12,false), 3);
+	h1.requestAccess(3, user(12,false), -1);
+	h1.requestAccess(3, user(12,false), -2);
+	h1.requestAccess(3, user(12,false), -2);
 	system("pause");
 	return 0;
 }

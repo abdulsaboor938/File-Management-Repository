@@ -185,7 +185,7 @@ public:
 		temp.waitinglist = nullptr;
 		this->hasharr[(file_id % this->hasharr.size())].push_back(temp);
 	}
-	void requestFile(k file_id, v temp_user, int temp_priority)
+	void requestAccess(k file_id, v temp_user, k temp_priority)
 	{
 		// -1 priority is highest
 		// -2 priority is lowest
@@ -199,16 +199,29 @@ public:
 				if (i->currentuser.id == -1 && i->waitinglist == nullptr) // if first user
 				{
 					i->currentuser = temp_user;
-					cout << "access granted" << endl;
+					cout << "access granted" << endl; // giving access to user
 				}
 				else
 				{
 					if (i->waitinglist == nullptr) // if waiting queue is empty
 						i->waitinglist = new heap<int, v>(); // assigning a heap
-					i->waitinglist->insert(temp_priority, temp_user);
-					cout << "addded to queue" << endl;
+					// code to check priority to insert
+					if (temp_priority == -1) // checking if highest priority
+					{
+						heapItem<k, v> temp;
+						temp = i->waitinglist->findMax();
+						i->waitinglist->insert(temp.key + 1, temp_user);
+					}
+					else if (temp_priority == -2) // checking if priority is minimum
+					{
+						heapItem<k, v> temp;
+						temp = i->waitinglist->findMin();
+						i->waitinglist->insert(temp.key - 1, temp_user);
+					}
+					else
+						i->waitinglist->insert(temp_priority, temp_user);
 				}
-				return;
+				return; // returning after operation
 			}
 		}
 		cout << "file not found" << endl;

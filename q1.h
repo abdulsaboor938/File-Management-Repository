@@ -86,13 +86,25 @@ public:
 	// finding max / min functions
 	heapItem<k,v> findMin() // function to give minimum value in O(1) time
 	{
-		assert(this->totalitems > 0); // assert to check for exceptions
-		return this->minItem; // returning minimum item
+		if(this->totalitems>0)
+			return this->minItem; // returning minimum item
+		else
+		{
+			heapItem<k, v> temp;
+			temp.key = 0;
+			return temp;
+		}
 	}
 	heapItem<k,v> findMax() // function to return maximum item in o(1) time
 	{
-		assert(this->totalitems > 0); // checking for exceptions
-		return this->arr[0]; // returning maximum value
+		if(this->totalitems>0)
+			return this->arr[0]; // returning maximum value
+		else
+		{
+			heapItem<k, v> temp;
+			temp.key = 0;
+			return temp;
+		}
 	}
 
 	// insertion / deletion functions
@@ -128,7 +140,12 @@ public:
 	}
 	heapItem<k,v> extractMax() // function to find and remove maximum priority item from heap
 	{
-		assert(this->totalitems > 0); // checking for exceptions
+		if (this->totalitems <= 0)
+		{
+			cout << "Heap is empty" << endl;
+			heapItem<k, v> temp;
+			return temp;
+		}
 		swap(arr[0], arr[--this->totalitems]); // swapping with minimum
 		reheapdown(this->arr, 0,this->totalitems-1); // reheaping down from top
 		// code to shrink array
