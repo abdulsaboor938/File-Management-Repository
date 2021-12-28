@@ -227,5 +227,58 @@ public:
 		}
 		cout << "file not found" << endl;
 	}
-	void printTable();
+	void printTable()
+	{
+		typename list<hashitem<k, v>>::iterator obj; // iterator for traversing array
+		// This function prints hashmap
+		cout << "Current Repository" << endl;
+		cout << "********************************************" << endl;
+		for (int i = 0; i < this->hasharr.size(); i++)
+		{
+			if (!this->hasharr[i].empty()) // if node is not empty
+			{
+				for (obj = this->hasharr[i].begin(); obj != this->hasharr[i].end(); obj++)
+				{
+					cout << "H" << i + 1 << "-> File" << obj->fileid << " ... \n\tAccess granted to ";
+					if (obj->currentuser.empty())
+						cout << "None" << endl;
+					else
+					{
+						// printing current user's vector in case access granted to multiple users
+						typename list<v>::iterator temp_obj = obj->currentuser.begin(); // iterator for list of currentaccess users
+						for (; temp_obj != obj->currentuser.end(); temp_obj++) // loop till end
+						{
+							// printing
+							cout << "User: " << temp_obj->id << ", ";
+							if (temp_obj->operation) // checking type of access
+								cout << "write\t";
+							else
+								cout << "read\t";
+						}
+						cout << endl;
+
+						// code to print next user
+						cout << "\tNext User: ";
+						if (obj->waitinglist->isEmpty()) // checking if empty list
+						{
+							cout << "None" << endl;
+							cout << "\tWaiting: None" << endl;
+						}
+						else // if not empty
+						{
+							v temp_v = obj->waitinglist->findMax().value; // temporary object of type v
+							cout << temp_v.id << ", ";
+							if (temp_v.operation) // checking read/ write
+								cout << "write" << endl;
+							else
+								cout << "read" << endl;
+							cout << "\tWaiting: " << obj->waitinglist->heapsize() << endl; // printing waiting users
+						}
+					}
+					cout << endl;
+				}
+				cout << endl << endl;
+			}
+		}
+	}
 };

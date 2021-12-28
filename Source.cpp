@@ -62,6 +62,7 @@ int main()
 	h1.requestAccess(3, user(12,false), -2);
 	h1.requestAccess(3, user(12,false), -2);
 	h1.requestAccess(1, user(12,false), -2);
+	h1.printTable();
 	system("pause");
 	return 0;
 }
