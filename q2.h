@@ -1,5 +1,5 @@
 #include<iostream>
-#include<assert.h>
+#include<string>
 #include<vector>
 #include<list>
 #include"q1.h"
@@ -272,7 +272,7 @@ public:
 				}
 				
 				// code to print users granted access
-				cout << "H" << index + 1 << "-> File:" << i->fileid << " ... \n\tAccess granted to ";
+				cout << "H" << index + 1 << "-> File:" << i->fileid << " ... \n\tAccess granted to: ";
 				if (i->currentuser.empty()) // if no user has access
 				{
 					cout << "None" << endl;
@@ -286,16 +286,16 @@ public:
 						// printing
 						cout << "User:" << temp_obj->id;
 						if (temp_obj->operation) // checking type of access
-							cout << "(write), ";
+							cout << "(write)  ";
 						else
-							cout << "(read), ";
+							cout << "(read)  ";
 					}
 					cout << endl;
 				}
 				return;
 			}
 		}
-		cout << "\nFile with id: " << file_id << " not found\n" << endl;
+		cout << "\nFile with id: " << file_id << " not found\n" << endl; // prompt if file is not found
 	}
 	void printTable()
 	{
@@ -309,7 +309,7 @@ public:
 			{
 				for (obj = this->hasharr[i].begin(); obj != this->hasharr[i].end(); obj++)
 				{
-					cout << "H" << i + 1 << "-> File:" << obj->fileid << " ... \n\tAccess granted to ";
+					cout << "H" << i + 1 << "-> File:" << obj->fileid << " ... \n\tAccess granted to: ";
 					if (obj->currentuser.empty()) // if no user has access
 					{
 						cout << "None" << endl;
@@ -325,9 +325,9 @@ public:
 							// printing
 							cout << "User:" << temp_obj->id;
 							if (temp_obj->operation) // checking type of access
-								cout << "(write), ";
+								cout << "(write)  ";
 							else
-								cout << "(read), ";
+								cout << "(read)  ";
 						}
 						cout << endl;
 
@@ -343,9 +343,9 @@ public:
 							v temp_v = obj->waitinglist->findMax().value; // temporary object of type v
 							cout << temp_v.id;
 							if (temp_v.operation) // checking read/ write
-								cout << "(write), " << endl;
+								cout << "(write)" << endl;
 							else
-								cout << "(read), " << endl;
+								cout << "(read)" << endl;
 							cout << "\tWaiting:" << obj->waitinglist->heapsize() << endl; // printing waiting users
 						}
 					}
@@ -355,4 +355,5 @@ public:
 			}
 		}
 	}
+
 };

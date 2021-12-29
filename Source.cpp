@@ -58,11 +58,12 @@ int main()
 	h1.requestAccess(3, user(13,false), 3);
 	h1.requestAccess(3, user(14,false), -1);
 	h1.requestAccess(3, user(12,false), -2);
+	h1.requestAccess(3, user(12,true), -2);
 	h1.requestAccess(3, user(12,false), -2);
 	h1.requestAccess(3, user(12,false), -2);
-	h1.requestAccess(1, user(12,false), -2);
-	//h1.releasefile(3);
-	//h1.releasefile(3);
+	h1.releasefile(3);
+	h1.releasefile(3);
+	h1.releasefile(3);
 	h1.printTable();
 	system("pause");
 	return 0;
