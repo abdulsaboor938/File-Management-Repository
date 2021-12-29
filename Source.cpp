@@ -2,6 +2,14 @@
 #include"q2.h"
 using namespace std;
 
+// required main
+int main()
+{
+	menu(); // only necessary for working on file
+	return 0;
+}
+
+ // Question 1 main
 //int main()
 //{
 //	user u1(1234, false), u2(3456, true);
@@ -49,34 +57,34 @@ using namespace std;
 //	return 0;
 //}
 
-int main()
-{
-	menu();
-	//hashmap <int, user>h1(11);
-	//h1.insert(3);
-	//h1.insert(14);
-	//h1.requestAccess(3, user(12,false), 2);
-	//h1.requestAccess(3, user(13,false), 3);
-	//h1.requestAccess(3, user(14,false), -1);
-	//h1.requestAccess(3, user(12,false), -2);
-	//h1.requestAccess(3, user(12,true), -2);
-	//h1.requestAccess(3, user(12,false), -2);
-	//h1.requestAccess(3, user(12,false), -2);
-	//h1.releasefile(3,user(12,false));
-	//h1.requestAccess(3, user(17, false), -1);
-	//h1.releasefile(3,user(14,false));
-	//h1.releasefile(3,user(12,false));
-	//h1.printTable();
-	//h1.loadfile("data.txt");
-	//h1.printTable();
-
-	//user u1(12, false);
-	//list<user> l1;
-	//l1.push_back(user(12, false));
-	//l1.push_back(user(13, false));
-	//typename list<user>::iterator obj = l1.begin();
-	//l1.erase(obj);
-
-	//system("pause");
-	return 0;
-}
+ //Question 2 main
+//int main()
+//{
+//	hashmap <int, user>h1(11);
+//	h1.insert(3);
+//	h1.insert(14);
+//	h1.requestAccess(3, user(12,false), 2);
+//	h1.requestAccess(3, user(13,false), 3);
+//	h1.requestAccess(3, user(14,false), -1);
+//	h1.requestAccess(3, user(12,false), -2);
+//	h1.requestAccess(3, user(12,true), -2);
+//	h1.requestAccess(3, user(12,false), -2);
+//	h1.requestAccess(3, user(12,false), -2);
+//	h1.releasefile(3,user(12,false));
+//	h1.requestAccess(3, user(17, false), -1);
+//	h1.releasefile(3,user(14,false));
+//	h1.releasefile(3,user(12,false));
+//	h1.printTable();
+//	h1.loadfile("data.txt");
+//	h1.printTable();
+//
+//	user u1(12, false);
+//	list<user> l1;
+//	l1.push_back(user(12, false));
+//	l1.push_back(user(13, false));
+//	typename list<user>::iterator obj = l1.begin();
+//	l1.erase(obj);
+//
+//	system("pause");
+//	return 0;
+//}
