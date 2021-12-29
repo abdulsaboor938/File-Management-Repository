@@ -1,5 +1,11 @@
+/*
+* Abdul Saboor
+* 20L-1113
+* BDS-3A
+*/
+
 #include<iostream>
-#include"q2.h"
+#include"l20-1113-q2.h"
 using namespace std;
 
 // required main
@@ -9,7 +15,7 @@ int main()
 	return 0;
 }
 
- // Question 1 main
+// Question 1 main
 //int main()
 //{
 //	user u1(1234, false), u2(3456, true);

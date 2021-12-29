@@ -1,14 +1,20 @@
+/*
+* Abdul Saboor
+* 20L-1113
+* BDS-3A 
+*/
+
 #include<iostream>
 #include<string>
 #include<Windows.h>
 #include<vector>
 #include<list>
 #include<fstream>
-#include"q1.h"
+#include"l20-1113-q1.h"
 
 // definition of hashitem class
 // k is type of file id, whereas v is type of priority queue
-template<class k,class v>
+template<class k, class v>
 class hashitem
 {
 	k fileid; // variable to maintain fileid
@@ -27,16 +33,16 @@ public:
 		if (this->waitinglist != nullptr)
 			delete this->waitinglist;
 	}
-	template<class k,class v>
+	template<class k, class v>
 	friend class hashmap;
 };
 
 // definition of hashhing class
 // k is type of file id, whereas v is type of priority queue
-template<class k,class v>
+template<class k, class v>
 class hashmap
 {
-	vector<list<hashitem<k,v>>> hasharr; // vector to maintain hashtable of all the files
+	vector<list<hashitem<k, v>>> hasharr; // vector to maintain hashtable of all the files
 
 public:
 	hashmap(int t_size) // overloaded constructor
@@ -56,7 +62,7 @@ public:
 	void insert(k file_id)
 	{
 		// insertion of a file into hash table
-		hashitem<k,v> temp;
+		hashitem<k, v> temp;
 		temp.fileid = file_id;
 		temp.waitinglist = nullptr;
 
@@ -129,7 +135,7 @@ public:
 				return; // returning after operation
 			}
 		}
-		cout << "\tFile with id: "<<file_id<<" not found ... Operation unsuccessful" << endl;
+		cout << "\tFile with id: " << file_id << " not found ... Operation unsuccessful" << endl;
 	}
 	void releasefile(k file_id, v temp_user)
 	{
@@ -159,7 +165,7 @@ public:
 						break;
 					}
 				}
-				if(!found)
+				if (!found)
 					cout << "\tGiven user not working on file ... Operation unsuccessful" << endl;
 
 				// do all this work when last user is removed
@@ -223,7 +229,7 @@ public:
 				}
 			}
 		}
-		if(!found)
+		if (!found)
 			cout << "\tFile with id: " << file_id << " not found ... Operation unsuccessful" << endl; // prompt if file is not found
 		else
 			cout << "\tFilel still accessed by some user ... Operation Unsuccessful" << endl;
@@ -308,7 +314,7 @@ public:
 		else
 		{
 			string temp;
-			int file_id, user_id, priority, count=0;
+			int file_id, user_id, priority, count = 0;
 			char operation;
 
 			while (getline(infile, temp))
@@ -316,8 +322,8 @@ public:
 			infile.close();
 
 			infile.open(path, ios::in); // going to file start
-			getline(infile,temp); // to remove headers
-			for(;count>1;count--)
+			getline(infile, temp); // to remove headers
+			for (; count > 1; count--)
 			{
 				infile >> file_id >> operation >> user_id >> operation >> priority >> operation >> operation; // reading from file
 
@@ -336,7 +342,9 @@ public:
 	}
 };
 
-// Menu Implementaion
+/*    Menu Implementaion    */
+
+// Menu Helper functions
 void insertfile(hashmap<int, user>& htable)
 {
 	// function to validate and insert a file
@@ -383,11 +391,11 @@ void accessfile(hashmap<int, user>& htable)
 		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
 		cout << "\tEnter file ID (5000 - 99999): " << file_id << endl;
 		cout << "\tEnter user ID (0 - 10000): " << user_id << endl;
-		cout << "\tEnter access type (r=read, w=write): ";
+		cout << "\tEnter access type (R=read, W=write): ";
 		cin >> operation;
-	} while (!(operation=='r' || operation=='w')); // validating operation type
+	} while (!(operation == 'R' || operation == 'W' || operation == 'r' || operation == 'w')); // validating operation type
 	bool temp_op = false;
-	if (operation == 'w')
+	if (operation == 'W' || operation == 'w')
 		temp_op = true;
 	// converted to boolean type
 
@@ -432,7 +440,7 @@ void removeaccess(hashmap<int, user>& htable)
 	Sleep(500);
 	system("cls");
 	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
-	htable.releasefile(file_id, user(user_id,false));
+	htable.releasefile(file_id, user(user_id, false));
 	Sleep(2000);
 	system("cls");
 }
@@ -470,11 +478,11 @@ void removefile(hashmap<int, user>& htable)
 	system("cls");
 }
 
-// main menu function
+// Main menu function
 void menu()
 {
 	hashmap<int, user> repo(11); // creating hash table to work on
-	START:
+START:
 	// this function prints a menu and calls corresponding functions
 	int choice = 0;
 	do
@@ -496,43 +504,43 @@ void menu()
 	Sleep(500);
 	switch (choice)
 	{
-		case 1:
-		{
-			insertfile(repo);
-			break;
-		}
-		case 2:
-		{
-			accessfile(repo);
-			break;
-		}
-		case 3:
-		{
-			removeaccess(repo);
-			break;
-		}
-		case 4:
-		{
-			readfile(repo);
-			break;
-		}
-		case 5:
-		{
-			removefile(repo);
-			break;
-		}
-		case 6:
-		{
-			system("cls");
-			cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
-			repo.printTable();
-			break;
-		}
-		case 7:
-		{
-			goto END;
-			break;
-		}
+	case 1:
+	{
+		insertfile(repo);
+		break;
+	}
+	case 2:
+	{
+		accessfile(repo);
+		break;
+	}
+	case 3:
+	{
+		removeaccess(repo);
+		break;
+	}
+	case 4:
+	{
+		readfile(repo);
+		break;
+	}
+	case 5:
+	{
+		removefile(repo);
+		break;
+	}
+	case 6:
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		repo.printTable();
+		break;
+	}
+	case 7:
+	{
+		goto END;
+		break;
+	}
 	}
 	goto START;
 END:

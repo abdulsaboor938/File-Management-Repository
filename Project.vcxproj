@@ -142,8 +142,8 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="q1.h" />
-    <ClInclude Include="q2.h" />
+    <ClInclude Include="l20-1113-q1.h" />
+    <ClInclude Include="l20-1113-q2.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="data.txt" />

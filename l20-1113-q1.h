@@ -1,3 +1,9 @@
+/*
+* Abdul Saboor
+* 20L-1113
+* BDS-3A
+*/
+
 #include<iostream>
 #include<assert.h>
 #include<vector>
@@ -23,13 +29,13 @@ public:
 			out << "User ID : " << temp.id << ", wants to write on this file" << endl;
 		return out;
 	}
-	
+
 	// friend classes
 	template<class k, class v>
 	friend class heapItem;
 	template<class k, class v>
 	friend class heap;
-	template<class k,class v>
+	template<class k, class v>
 	friend class hashitem;
 	template<class k, class v>
 	friend class hashmap;
@@ -56,7 +62,7 @@ class heap
 	vector<heapItem<k, v>> arr; // vector to maintain heap
 	int capacity; // variable to maintain total capacity of vector
 	int totalitems; // variable to maintain total filled items of vector
-	heapItem<k,v> minItem; // variable to maintain minimum priority user
+	heapItem<k, v> minItem; // variable to maintain minimum priority user
 
 public:
 	// class fucntions
@@ -88,9 +94,9 @@ public:
 	}
 
 	// finding max / min functions
-	heapItem<k,v> findMin() // function to give minimum value in O(1) time
+	heapItem<k, v> findMin() // function to give minimum value in O(1) time
 	{
-		if(this->totalitems>0)
+		if (this->totalitems > 0)
 			return this->minItem; // returning minimum item
 		else
 		{
@@ -99,9 +105,9 @@ public:
 			return temp;
 		}
 	}
-	heapItem<k,v> findMax() // function to return maximum item in o(1) time
+	heapItem<k, v> findMax() // function to return maximum item in o(1) time
 	{
-		if(this->totalitems>0)
+		if (this->totalitems > 0)
 			return this->arr[0]; // returning maximum value
 		else
 		{
@@ -122,7 +128,7 @@ public:
 
 		// validating and updating minimum variable
 		if (this->totalitems == 0) // if first insertion
-		{	
+		{
 			// updating minimum item
 			this->minItem.key = key;
 			this->minItem.value = value;
@@ -140,9 +146,9 @@ public:
 		// adding new user to last of array
 		this->arr[this->totalitems].key = key;
 		this->arr[this->totalitems++].value = value;
-		reheapup(this->arr,0,this->totalitems - 1); // reheaping upwards from inserted item
+		reheapup(this->arr, 0, this->totalitems - 1); // reheaping upwards from inserted item
 	}
-	heapItem<k,v> extractMax() // function to find and remove maximum priority item from heap
+	heapItem<k, v> extractMax() // function to find and remove maximum priority item from heap
 	{
 		if (this->totalitems <= 0)
 		{
@@ -151,7 +157,7 @@ public:
 			return temp;
 		}
 		swap(arr[0], arr[--this->totalitems]); // swapping with minimum
-		reheapdown(this->arr, 0,this->totalitems-1); // reheaping down from top
+		reheapdown(this->arr, 0, this->totalitems - 1); // reheaping down from top
 		// code to shrink array
 		if (this->capacity / 2 > this->totalitems) // checking if less than half is filled
 		{
@@ -160,9 +166,9 @@ public:
 		}
 		return arr[totalitems]; // returning maximum item
 	}
-	
+
 	// reheaping functions
-	void reheapup(vector<heapItem<k,v>> &data,int root, int last) // recursive code to reheap up from a given node
+	void reheapup(vector<heapItem<k, v>>& data, int root, int last) // recursive code to reheap up from a given node
 	{
 		int parent;
 		if (last > root) { // tree is not empty
@@ -170,11 +176,11 @@ public:
 			if (data[parent].key < data[last].key)  // if parent is smaller
 			{
 				swap(data[parent], data[last]); // swapping from parent
-				reheapup(data,root, parent); // recursive call to parent
+				reheapup(data, root, parent); // recursive call to parent
 			}
 		}
 	}
-	void reheapdown(vector<heapItem<k,v>> &data,int cnode, int last) // recursive code to reheapdown from a given node
+	void reheapdown(vector<heapItem<k, v>>& data, int cnode, int last) // recursive code to reheapdown from a given node
 	{
 		int maxChild, rightChild, leftChild; // local variables to check maximum child
 		leftChild = 2 * cnode + 1; // calculating left child
@@ -193,7 +199,7 @@ public:
 			if (data[cnode].key < data[maxChild].key) // checking if child's data is less than parent
 			{
 				swap(data[cnode], data[maxChild]); // swapping with maximum child
-				reheapdown(data,maxChild, last); // recursive call from maximum child
+				reheapdown(data, maxChild, last); // recursive call from maximum child
 			}
 		}
 	}
