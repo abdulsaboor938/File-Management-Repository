@@ -227,6 +227,20 @@ public:
 		}
 		cout << "\nFile with id: "<<file_id<<" not found\n" << endl;
 	}
+	void releasefile(k file_id)
+	{
+		// this function releases a file and gives access to next highest priority user
+		int index = file_id % this->hasharr.size(); // calculating index of hashtable
+		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
+		for (; i != this->hasharr[index].end(); i++) // loop in list
+		{
+			if (i->fileid == file_id)
+				cout << "file released" << endl;
+		}
+		cout << "\nFile with id: " << file_id << " not found\n" << endl;
+	}
+
+
 	void printTable()
 	{
 		// This function prints hashmap
