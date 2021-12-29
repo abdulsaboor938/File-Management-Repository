@@ -55,8 +55,6 @@ int main()
 	//hashmap <int, user>h1(11);
 	//h1.insert(3);
 	//h1.insert(14);
-	//h1->deleteFile(3);
-	//h1->deleteFile(14);
 	//h1.requestAccess(3, user(12,false), 2);
 	//h1.requestAccess(3, user(13,false), 3);
 	//h1.requestAccess(3, user(14,false), -1);

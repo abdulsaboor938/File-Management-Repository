@@ -348,6 +348,7 @@ void insertfile(hashmap<int, user>& htable)
 
 void menu()
 {
+	hashmap<int, user> repo(11); // creating hash table to work on
 	START:
 	// this function prints a menu and calls corresponding functions
 	int choice = 0;
@@ -357,18 +358,17 @@ void menu()
 		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
 		cout << "\t1: I want insert a file" << endl;
 		cout << "\t2: I want to access a file" << endl;
-		cout << "\t3: I am done workin on a file" << endl;
+		cout << "\t3: I am done working on a file" << endl;
 		cout << "\t4: I want to load data from a text file" << endl;
 		cout << "\t5: I want to delete a file" << endl;
 		cout << "\t6: I want to view repository" << endl;
 		cout << "\t7: I want to close application" << endl;
 
-		cout << "\n\tPlease Select one of the above options (1-6): ";
+		cout << "\n\tPlease Select one of the above options (1-7): ";
 		cin >> choice;
 
 	} while (choice > 7 || choice < 1);
 	Sleep(500);
-	hashmap<int, user> repo(11); // creating hash table to work on
 	switch (choice)
 	{
 		case 1:
@@ -414,6 +414,7 @@ void menu()
 END:
 	system("cls");
 	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
-	cout << "\tSee you soon" << endl;
+	cout << "\tSee you soon ... exiting" << endl;
 	Sleep(500);
+	system("cls");
 }
