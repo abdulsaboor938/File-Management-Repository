@@ -51,8 +51,8 @@ using namespace std;
 
 int main()
 {
-	menu();
-	//hashmap <int, user>h1(11);
+	//menu();
+	hashmap <int, user>h1(11);
 	//h1.insert(3);
 	//h1.insert(14);
 	//h1.requestAccess(3, user(12,false), 2);
@@ -67,8 +67,8 @@ int main()
 	//h1.releasefile(3,user(14,false));
 	//h1.releasefile(3,user(12,false));
 	//h1.printTable();
-	//h1.loadfile("data.txt",h1);
-	//h1.printTable();
+	h1.loadfile("data.txt",h1);
+	h1.printTable();
 
 	//user u1(12, false);
 	//list<user> l1;
@@ -77,6 +77,6 @@ int main()
 	//typename list<user>::iterator obj = l1.begin();
 	//l1.erase(obj);
 
-	system("pause");
+	//system("pause");
 	return 0;
 }

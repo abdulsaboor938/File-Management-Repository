@@ -77,8 +77,8 @@ public:
 	void requestAccess(k file_id, v temp_user, k temp_priority)
 	{
 		// This function adds users in hashtable far accessing a file
-		// -1 priority is highest
-		// -2 priority is lowest
+		// 100 priority is highest
+		// 0 priority is lowest
 		int index = file_id % this->hasharr.size(); // calculating index of hashtable
 		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
 		for (; i != this->hasharr[index].end(); i++) // loop in list
@@ -89,38 +89,47 @@ public:
 				if (i->currentuser.empty() && i->waitinglist == nullptr) // if first user
 				{
 					i->currentuser.push_back(temp_user); // giving access to user
+					cout << "\tAccess granted" << endl;
 				}
 				else
 				{
 					if (i->waitinglist == nullptr) // if waiting queue is empty
 						i->waitinglist = new heap<int, v>(); // assigning a heap
 					// code to check priority to insert
-					if (temp_priority == -1) // checking if highest priority
+					if (temp_priority == 100) // checking if highest priority
 					{
 						heapItem<k, v> temp;
 						// checking for highest reading priority
 						v t_user = i->currentuser.front();
 						if (t_user.operation == false && temp_user.operation == false) // if currentuser has read access
+						{
 							i->currentuser.push_back(temp_user); // pushing to current users
+							cout << "\tAccess granted" << endl;
+						}
 						else
 						{
 							temp = i->waitinglist->findMax();
 							i->waitinglist->insert(temp.key + 1, temp_user);
+							cout << "\tAdded to waiting list" << endl;
 						}
 					}
-					else if (temp_priority == -2) // checking if priority is minimum
+					else if (temp_priority == 0) // checking if priority is minimum
 					{
 						heapItem<k, v> temp;
 						temp = i->waitinglist->findMin();
 						i->waitinglist->insert(temp.key - 1, temp_user); // inserting with maximum priority
+						cout << "\tAdded to waiting list" << endl;
 					}
 					else // if minimum priority
-						i->waitinglist->insert(temp_priority, temp_user); // inserting with minimum priority
+					{
+						i->waitinglist->insert(temp_priority, temp_user); // inserting with given priority
+						cout << "\tAdded to waiting list" << endl;
+					}
 				}
 				return; // returning after operation
 			}
 		}
-		cout << "\nFile with id: "<<file_id<<" not found\n" << endl;
+		cout << "\tFile with id: "<<file_id<<" not found ... Operation unsuccessful" << endl;
 	}
 	void releasefile(k file_id, v temp_user)
 	{
@@ -144,6 +153,7 @@ public:
 					if (curr_user->id == temp_user.id)
 					{
 						i->currentuser.erase(curr_user);
+						cout << "\tOperation successful" << endl;
 						break;
 					}
 				}
@@ -183,32 +193,10 @@ public:
 						}
 					}
 				}
-				
-				// code to print users granted access
-				cout << "H" << index + 1 << "-> File:" << i->fileid << " ... \n\tAccess granted to: ";
-				if (i->currentuser.empty()) // if no user has access
-				{
-					cout << "None" << endl;
-				}
-				else
-				{
-					// printing current user's vector in case access granted to multiple users
-					typename list<v>::iterator temp_obj = i->currentuser.begin(); // iterator for list of currentaccess users
-					for (; temp_obj != i->currentuser.end(); temp_obj++) // loop till end
-					{
-						// printing
-						cout << "User:" << temp_obj->id;
-						if (temp_obj->operation) // checking type of access
-							cout << "(write)  ";
-						else
-							cout << "(read)  ";
-					}
-					cout << endl;
-				}
 				return;
 			}
 		}
-		cout << "\nFile with id: " << file_id << " not found\n" << endl; // prompt if file is not found
+		cout << "\tFile with id: " << file_id << " not found ... Operation unsuccessful" << endl; // prompt if file is not found
 	}
 	void deleteFile(k file_id)
 	{
@@ -385,7 +373,7 @@ void accessfile(hashmap<int, user>& htable)
 		system("cls");
 		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
 		cout << "\tEnter file ID (5000 - 99999): " << file_id << endl;
-		cout << "\tEnter user ID (0 - 10000): ";
+		cout << "\tEnter user ID (0 - 10000): " << user_id << endl;
 		cout << "\tEnter access type (r=read, w=write): " << operation << endl;
 		cout << "\tEnter priority (0=min - 100=max): ";
 		cin >> priority;
@@ -395,10 +383,51 @@ void accessfile(hashmap<int, user>& htable)
 	system("cls");
 	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
 	htable.requestAccess(file_id, user(user_id, temp_op), priority);
+	Sleep(2000);
+	system("cls");
+}
+void removeaccess(hashmap<int, user>& htable)
+{
+	// function to validate and insert a file
+	int file_id = 0;
+	int user_id = 0;
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): ";
+		cin >> file_id;
+	} while (file_id < 5000 || file_id>99999); // validating range of fileid
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): " << file_id << endl;
+		cout << "\tEnter user ID (0 - 10000): ";
+		cin >> user_id;
+	} while (user_id < 0 || user_id>10000); // validating range of userid
+	Sleep(500);
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	htable.releasefile(file_id, user(user_id,false));
+	Sleep(2000);
+	system("cls");
+}
+void readfile(hashmap<int, user>& htable)
+{
+	// function to read file from a path
+	string path;
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	cout << "\tEnter text file path: ";
+	cin >> path;
+	Sleep(500);
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	//htable.loadfile(path);
 	Sleep(500);
 	system("cls");
 }
-
 
 void menu()
 {
@@ -432,17 +461,17 @@ void menu()
 		}
 		case 2:
 		{
-			//insertfile();
+			accessfile(repo);
 			break;
 		}
 		case 3:
 		{
-			//insertfile();
+			removeaccess(repo);
 			break;
 		}
 		case 4:
 		{
-			//insertfile();
+			readfile(repo);
 			break;
 		}
 		case 5:
