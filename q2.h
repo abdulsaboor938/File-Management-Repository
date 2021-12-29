@@ -234,13 +234,69 @@ public:
 		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
 		for (; i != this->hasharr[index].end(); i++) // loop in list
 		{
-			if (i->fileid == file_id)
-				cout << "file released" << endl;
+			if (i->fileid == file_id) // checking if file id's match
+			{
+				// clear current users
+				// add top user
+				// if top user is not write the
+				// extract users while not empty and a write is found
+				// print if null or vector
+
+				i->currentuser.clear(); // clearing vector of current user
+				if (!i->waitinglist->isEmpty()) // if waiting list is not empty
+				{
+					heapItem<k, v> temp = i->waitinglist->extractMax(); // extracting maximum user
+					i->currentuser.push_back(temp.value); // pushing in vector
+
+					// code to read further users (if any)
+					if (!temp.value.operation) // if operation of current user was read
+					{
+						// finding and pushing all read users
+						bool check = true;
+						while (!i->waitinglist->isEmpty() && check) // while not empty and read
+						{
+							temp = i->waitinglist->findMax(); // getting maximum value
+							if (temp.value.operation) // if write operation
+							{
+								check = false; // to break the loop
+							}
+							else
+							{
+								temp = i->waitinglist->extractMax(); // extracting maximum value
+								i->currentuser.push_back(temp.value); // pushing back maximum value
+							}
+							// going back to loop
+						}
+					}
+
+				}
+				
+				// code to print users granted access
+				cout << "H" << index + 1 << "-> File:" << i->fileid << " ... \n\tAccess granted to ";
+				if (i->currentuser.empty()) // if no user has access
+				{
+					cout << "None" << endl;
+				}
+				else
+				{
+					// printing current user's vector in case access granted to multiple users
+					typename list<v>::iterator temp_obj = i->currentuser.begin(); // iterator for list of currentaccess users
+					for (; temp_obj != i->currentuser.end(); temp_obj++) // loop till end
+					{
+						// printing
+						cout << "User:" << temp_obj->id;
+						if (temp_obj->operation) // checking type of access
+							cout << "(write), ";
+						else
+							cout << "(read), ";
+					}
+					cout << endl;
+				}
+				return;
+			}
 		}
 		cout << "\nFile with id: " << file_id << " not found\n" << endl;
 	}
-
-
 	void printTable()
 	{
 		// This function prints hashmap
@@ -257,8 +313,8 @@ public:
 					if (obj->currentuser.empty()) // if no user has access
 					{
 						cout << "None" << endl;
-						cout << "\tNext User: None" << endl;
-						cout << "\tWaiting: None" << endl;
+						cout << "\tNext User:None" << endl;
+						cout << "\tWaiting:None" << endl;
 					}
 					else
 					{
@@ -267,30 +323,30 @@ public:
 						for (; temp_obj != obj->currentuser.end(); temp_obj++) // loop till end
 						{
 							// printing
-							cout << "User: " << temp_obj->id << ", ";
+							cout << "User:" << temp_obj->id;
 							if (temp_obj->operation) // checking type of access
-								cout << "write\t";
+								cout << "(write), ";
 							else
-								cout << "read\t";
+								cout << "(read), ";
 						}
 						cout << endl;
 
 						// code to print next user from priority queue
-						cout << "\tNext User: ";
+						cout << "\tNext User:";
 						if (obj->waitinglist->isEmpty()) // checking if empty queue
 						{
 							cout << "None" << endl;
-							cout << "\tWaiting: None" << endl;
+							cout << "\tWaiting:None" << endl;
 						}
 						else // if queue is not empty
 						{
 							v temp_v = obj->waitinglist->findMax().value; // temporary object of type v
-							cout << temp_v.id << ", ";
+							cout << temp_v.id;
 							if (temp_v.operation) // checking read/ write
-								cout << "write" << endl;
+								cout << "(write), " << endl;
 							else
-								cout << "read" << endl;
-							cout << "\tWaiting: " << obj->waitinglist->heapsize() << endl; // printing waiting users
+								cout << "(read), " << endl;
+							cout << "\tWaiting:" << obj->waitinglist->heapsize() << endl; // printing waiting users
 						}
 					}
 					cout << endl;
