@@ -65,8 +65,18 @@ int main()
 	//h1.releasefile(3);
 	//h1.releasefile(3);
 	//h1.printTable();
-	h1.loadfile("data.txt",h1);
-	h1.printTable();
+	//h1.loadfile("data.txt",h1);
+	//h1.printTable();
+
+	list<int> l1;
+	l1.push_back(3);
+	l1.push_back(2);
+	l1.push_back(4);
+	l1.remove(2);
+	l1.remove(3);
+	l1.push_back(2);
+	l1.remove(2);
+
 	system("pause");
 	return 0;
 }
