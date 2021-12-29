@@ -98,8 +98,15 @@ public:
 					if (temp_priority == -1) // checking if highest priority
 					{
 						heapItem<k, v> temp;
-						temp = i->waitinglist->findMax();
-						i->waitinglist->insert(temp.key + 1, temp_user);
+						// checking for highest reading priority
+						v t_user = i->currentuser.front();
+						if (t_user.operation == false && temp_user.operation == false) // if currentuser has read access
+							i->currentuser.push_back(temp_user); // pushing to current users
+						else
+						{
+							temp = i->waitinglist->findMax();
+							i->waitinglist->insert(temp.key + 1, temp_user);
+						}
 					}
 					else if (temp_priority == -2) // checking if priority is minimum
 					{
