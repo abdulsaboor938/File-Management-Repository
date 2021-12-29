@@ -44,6 +44,8 @@ public:
 	k key; // template variable to maintain key
 	v value; // template variable to maintain value
 
+	heapItem() :key(), value() {}
+
 	template<class k, class v>
 	friend class heap; // making friend class for easier access
 };
@@ -69,6 +71,8 @@ public:
 	}
 	bool isEmpty()
 	{
+		if (this == nullptr)
+			return true;
 		return(this->totalitems == 0); // returns true if no items are present
 	}
 	int heapsize() // function to return current heapsize

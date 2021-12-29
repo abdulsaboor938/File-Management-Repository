@@ -2,139 +2,8 @@
 #include<string>
 #include<vector>
 #include<list>
+#include<fstream>
 #include"q1.h"
-
-// This is an implementation of HashItem class
-//#ifndef HASHITEM
-//#define HASHITEM
-//template<class v>
-//class HashItem
-//{
-//	int key;
-//	v value;
-//	HashItem<v>* next;
-//
-//public:
-//	HashItem() :key(0), value(NULL), next(nullptr) {}
-//	HashItem(int temp_key, v temp_val, HashItem<v>* temp_next = nullptr) :
-//		key(temp_key), value(temp_val), next(temp_next) {}
-//	template<class v>
-//	friend class HashMap;
-//};
-//#endif
-//
-//#ifndef HASHMAP
-//#define HASHMAP
-//template<class v>
-//class HashMap
-//{
-//private:
-//	vector<HashItem<v>>hashVector;
-//	int currentElements;
-//public:
-//	HashMap();
-//	HashMap(int const capacity);
-//	void insert(int const key, v const value);
-//	bool deleteKey(int const key) const;
-//	v* get(int const key) const;
-//	~HashMap();
-//
-//};
-//
-//template<class v>
-//HashMap<v>::HashMap()
-//{
-//	this->hashVector.resize(10);
-//	this->currentElements = 0;
-//}
-//template<class v>
-//HashMap<v>::HashMap(int const capacity)
-//{
-//	assert(capacity > 1);
-//	this->hashVector.resize(capacity);
-//	this->currentElements = 0;
-//}
-//
-//template<class v>
-//void HashMap<v>::insert(int const key, v const value)
-//{
-//	int index = key % (this->hashVector.capacity());
-//	hashVector[index].next = new HashItem<v>(key, value, hashVector[index].next);
-//	this->currentElements++;
-//}
-//
-//template<class v>
-//bool HashMap<v>::deleteKey(int const key) const
-//{
-//	int index = key % (this->hashVector.capacity());
-//	HashItem<v>* temp = hashVector[index].next;
-//	{
-//		while (temp != nullptr)
-//		{
-//			if (temp->key == key)
-//			{
-//				if (temp->next != nullptr)
-//				{
-//					HashItem<v>* temp2 = temp->next;
-//					temp->key = temp->next->key;
-//					temp->value = temp->next->value;
-//					temp->next = temp->next->next;
-//					delete temp2;
-//				}
-//				else {
-//					HashItem<v>* temp_ptr = hashVector[index].next;
-//					while (temp_ptr->next != temp)
-//					{
-//						temp_ptr = temp_ptr->next;
-//					}
-//					temp_ptr->next = temp_ptr->next->next;
-//					delete temp;
-//				}
-//				return true;
-//			}
-//			temp = temp->next;
-//		}
-//		return false;
-//	}
-//}
-//
-//template<class v>
-//v* HashMap<v>::get(int const key) const
-//{
-//	int index = key % (this->hashVector.capacity());
-//	HashItem<v>* temp = hashVector[index].next;
-//	while (temp != nullptr)
-//	{
-//		if (temp->key == key)
-//		{
-//			return &temp->value;
-//		}
-//		temp = temp->next;
-//	}
-//	return nullptr;
-//}
-//
-//template<class v>
-//HashMap<v>::~HashMap()
-//{
-//	for (int i = 0; i < hashVector.capacity(); i++)
-//	{
-//		HashItem<v>* temp = hashVector[i].next;
-//		if (temp != nullptr)
-//		{
-//			HashItem<v>* temp1 = temp;
-//			while (temp != nullptr)
-//			{
-//				temp1 = temp;
-//				temp = temp->next;
-//				delete temp1;
-//			}
-//		}
-//	}
-//	hashVector.resize(0);
-//	this->currentElements = 0;
-//}
-//#endif
 
 // definition of hashitem class
 // k is type of file id, whereas v is type of priority queue
@@ -184,7 +53,16 @@ public:
 		hashitem<k,v> temp;
 		temp.fileid = file_id;
 		temp.waitinglist = nullptr;
-		this->hasharr[(file_id % this->hasharr.size())].push_back(temp);
+
+		// checking if file is already present
+		int index = file_id % this->hasharr.size();
+		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
+		for (; i != this->hasharr[index].end(); i++) // loop in list
+		{
+			if (i->fileid == file_id) // checking if file ids match
+				return;
+		}
+		this->hasharr[index].push_back(temp);
 	}
 	void requestAccess(k file_id, v temp_user, k temp_priority)
 	{
@@ -355,5 +233,39 @@ public:
 			}
 		}
 	}
+	void loadfile(string path,hashmap<k,v> &temp_hash)
+	{
+		// This program loads data from a (complete) text file
+		ifstream infile;
+		infile.open(path, ios::in); // opening file
+		if (!infile) // if there is an error in opening the file
+		{
+			cout << "Error opening the file." << endl;
+		}
+		else
+		{
+			string temp;
+			int file_id, user_id, priority, count=0;
+			char operation;
 
+			while (getline(infile, temp))
+				count++; // counting number of lines in file
+			infile.close();
+
+			infile.open(path, ios::in); // going to file start
+			getline(infile,temp); // to remove headers
+			for(;count>1;count--)
+			{
+				infile >> file_id >> operation >> user_id >> operation >> priority >> operation >> operation; // reading from file
+
+				bool temp_op = false; // operation flag
+				if (operation == 'W') // if write operation
+					temp_op = true; // changing access type
+
+				temp_hash.insert(file_id); // inserting file in hashmap
+				temp_hash.requestAccess(file_id, v(user_id, temp_op), priority); // inserting user in hashmap
+			}
+			infile.close(); // closing file
+		}
+	}
 };
