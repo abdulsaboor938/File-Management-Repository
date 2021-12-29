@@ -51,25 +51,26 @@ using namespace std;
 
 int main()
 {
-	hashmap <int, user>h1(11);
-	h1.insert(3);
-	h1.insert(14);
+	menu();
+	//hashmap <int, user>h1(11);
+	//h1.insert(3);
+	//h1.insert(14);
 	//h1->deleteFile(3);
 	//h1->deleteFile(14);
-	h1.requestAccess(3, user(12,false), 2);
-	h1.requestAccess(3, user(13,false), 3);
-	h1.requestAccess(3, user(14,false), -1);
-	h1.requestAccess(3, user(12,false), -2);
-	h1.requestAccess(3, user(12,true), -2);
-	h1.requestAccess(3, user(12,false), -2);
-	h1.requestAccess(3, user(12,false), -2);
-	h1.releasefile(3,user(12,false));
-	h1.requestAccess(3, user(17, false), -1);
-	h1.releasefile(3,user(14,false));
+	//h1.requestAccess(3, user(12,false), 2);
+	//h1.requestAccess(3, user(13,false), 3);
+	//h1.requestAccess(3, user(14,false), -1);
+	//h1.requestAccess(3, user(12,false), -2);
+	//h1.requestAccess(3, user(12,true), -2);
+	//h1.requestAccess(3, user(12,false), -2);
+	//h1.requestAccess(3, user(12,false), -2);
 	//h1.releasefile(3,user(12,false));
-	h1.printTable();
-	h1.loadfile("data.txt",h1);
-	h1.printTable();
+	//h1.requestAccess(3, user(17, false), -1);
+	//h1.releasefile(3,user(14,false));
+	//h1.releasefile(3,user(12,false));
+	//h1.printTable();
+	//h1.loadfile("data.txt",h1);
+	//h1.printTable();
 
 	//user u1(12, false);
 	//list<user> l1;

@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<Windows.h>
 #include<vector>
 #include<list>
 #include<fstream>
@@ -55,11 +56,6 @@ public:
 	void insert(k file_id)
 	{
 		// insertion of a file into hash table
-		while (file_id < 0)
-		{
-			cout << "Input FileID (>0): ";
-			cin >> file_id;
-		}
 		hashitem<k,v> temp;
 		temp.fileid = file_id;
 		temp.waitinglist = nullptr;
@@ -70,9 +66,13 @@ public:
 		for (; i != this->hasharr[index].end(); i++) // loop in list
 		{
 			if (i->fileid == file_id) // checking if file ids match
+			{
+				cout << "\tFile already exists" << endl;
 				return;
+			}
 		}
 		this->hasharr[index].push_back(temp);
+		cout << "\tFile inserted successfully" << endl;
 	}
 	void requestAccess(k file_id, v temp_user, k temp_priority)
 	{
@@ -324,3 +324,96 @@ public:
 		}
 	}
 };
+
+// Menu Implementaion
+void insertfile(hashmap<int, user>& htable)
+{
+	// function to validate and insert a file
+	int file_id = 0;
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): ";
+		cin >> file_id;
+	} while (file_id < 5000 || file_id>99999); // validating range
+	Sleep(500);
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	htable.insert(file_id); // calling inser function
+	Sleep(500);
+	system("cls");
+}
+
+
+void menu()
+{
+	START:
+	// this function prints a menu and calls corresponding functions
+	int choice = 0;
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\t1: I want insert a file" << endl;
+		cout << "\t2: I want to access a file" << endl;
+		cout << "\t3: I am done workin on a file" << endl;
+		cout << "\t4: I want to load data from a text file" << endl;
+		cout << "\t5: I want to delete a file" << endl;
+		cout << "\t6: I want to view repository" << endl;
+		cout << "\t7: I want to close application" << endl;
+
+		cout << "\n\tPlease Select one of the above options (1-6): ";
+		cin >> choice;
+
+	} while (choice > 7 || choice < 1);
+	Sleep(500);
+	hashmap<int, user> repo(11); // creating hash table to work on
+	switch (choice)
+	{
+		case 1:
+		{
+			insertfile(repo);
+			break;
+		}
+		case 2:
+		{
+			//insertfile();
+			break;
+		}
+		case 3:
+		{
+			//insertfile();
+			break;
+		}
+		case 4:
+		{
+			//insertfile();
+			break;
+		}
+		case 5:
+		{
+			//insertfile();
+			break;
+		}
+		case 6:
+		{
+			system("cls");
+			cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+			repo.printTable();
+			system("pause");
+			break;
+		}
+		case 7:
+		{
+			goto END;
+			break;
+		}
+	}
+	goto START;
+END:
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	cout << "\tSee you soon" << endl;
+	Sleep(500);
+}
