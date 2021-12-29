@@ -105,7 +105,7 @@ public:
 		}
 		cout << "\nFile with id: "<<file_id<<" not found\n" << endl;
 	}
-	void releasefile(k file_id)
+	void releasefile(k file_id, v temp_user)
 	{
 		// this function releases a file and gives access to next highest priority user
 		int index = file_id % this->hasharr.size(); // calculating index of hashtable
@@ -120,33 +120,47 @@ public:
 				// extract users while not empty and a write is found
 				// print if null or vector
 
-				i->currentuser.clear(); // clearing vector of current user
-				if (!i->waitinglist->isEmpty()) // if waiting list is not empty
+				typename list<v>::iterator curr_user = i->currentuser.begin();
+				for (; curr_user != i->currentuser.end(); curr_user++)
 				{
-					heapItem<k, v> temp = i->waitinglist->extractMax(); // extracting maximum user
-					i->currentuser.push_back(temp.value); // pushing in vector
-
-					// code to read further users (if any)
-					if (!temp.value.operation) // if operation of current user was read
+					// if current user is found in active users then delete
+					if (curr_user->id == temp_user.id)
 					{
-						// finding and pushing all read users
-						bool check = true;
-						while (!i->waitinglist->isEmpty() && check) // while not empty and read
-						{
-							temp = i->waitinglist->findMax(); // getting maximum value
-							if (temp.value.operation) // if write operation
-							{
-								check = false; // to break the loop
-							}
-							else
-							{
-								temp = i->waitinglist->extractMax(); // extracting maximum value
-								i->currentuser.push_back(temp.value); // pushing back maximum value
-							}
-							// going back to loop
-						}
+						i->currentuser.erase(curr_user);
+						break;
 					}
+				}
 
+				// do all this work when last user is removed
+				if (i->currentuser.empty())
+				{
+					if (!i->waitinglist->isEmpty()) // if waiting list is not empty
+					{
+						heapItem<k, v> temp = i->waitinglist->extractMax(); // extracting maximum user
+						i->currentuser.push_back(temp.value); // pushing in vector
+
+						// code to read further users (if any)
+						if (!temp.value.operation) // if operation of current user was read
+						{
+							// finding and pushing all read users
+							bool check = true;
+							while (!i->waitinglist->isEmpty() && check) // while not empty and read
+							{
+								temp = i->waitinglist->findMax(); // getting maximum value
+								if (temp.value.operation) // if write operation
+								{
+									check = false; // to break the loop
+								}
+								else
+								{
+									temp = i->waitinglist->extractMax(); // extracting maximum value
+									i->currentuser.push_back(temp.value); // pushing back maximum value
+								}
+								// going back to loop
+							}
+						}
+
+					}
 				}
 				
 				// code to print users granted access
