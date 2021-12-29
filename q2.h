@@ -133,6 +133,7 @@ public:
 	}
 	void releasefile(k file_id, v temp_user)
 	{
+		bool found = false;
 		// this function releases a file and gives access to next highest priority user
 		int index = file_id % this->hasharr.size(); // calculating index of hashtable
 		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
@@ -154,9 +155,12 @@ public:
 					{
 						i->currentuser.erase(curr_user);
 						cout << "\tOperation successful" << endl;
+						found = true;
 						break;
 					}
 				}
+				if(!found)
+					cout << "\tGiven user not working on file ... Operation unsuccessful" << endl;
 
 				// do all this work when last user is removed
 				if (!i->waitinglist->isEmpty()) // if waiting list is not empty and curretn is empty
@@ -200,6 +204,7 @@ public:
 	}
 	void deleteFile(k file_id)
 	{
+		bool found = false;
 		// this function deletes a file if it is not in use
 		int index = file_id % this->hasharr.size();
 		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
@@ -207,27 +212,35 @@ public:
 		{
 			if (i->fileid == file_id) // checking if file ids match
 			{
+				found = true;
 				// checking if currentuser are empty
 				if (i->currentuser.empty())
 				{
 					// deleting file
 					this->hasharr[index].erase(i);
+					cout << "\tFile delete successful" << endl;
 					return;
 				}
 			}
 		}
-
+		if(!found)
+			cout << "\tFile with id: " << file_id << " not found ... Operation unsuccessful" << endl; // prompt if file is not found
+		else
+			cout << "\tFilel still accessed by some user ... Operation Unsuccessful" << endl;
 	}
 	void printTable()
 	{
+		int found = 0; // variable to check
 		// This function prints hashmap
 		typename list<hashitem<k, v>>::iterator obj; // iterator for traversing array
+		cout << "\n\t--------------------------------------------" << endl;
 		cout << "\tCurrent Repository" << endl;
-		cout << "\t********************************************" << endl << endl;
+		cout << "\t--------------------------------------------" << endl << endl;
 		for (int i = 0; i < this->hasharr.size(); i++)
 		{
 			if (!this->hasharr[i].empty()) // if node is not empty
 			{
+				found++;
 				for (obj = this->hasharr[i].begin(); obj != this->hasharr[i].end(); obj++)
 				{
 					cout << "\tH" << i + 1 << "-> File:" << obj->fileid << " ... \n\tAccess granted to: ";
@@ -275,15 +288,22 @@ public:
 				cout << endl << endl;
 			}
 		}
+		if (found == 0)
+		{
+			cout << "\tNo files in repository to show at this moment" << endl << endl;
+			Sleep(2000);
+		}
+		else
+			system("pause");
 	}
-	void loadfile(string path,hashmap<k,v> &temp_hash)
+	void loadfile(string path)
 	{
 		// This program loads data from a (complete) text file
 		ifstream infile;
 		infile.open(path, ios::in); // opening file
 		if (!infile) // if there is an error in opening the file
 		{
-			cout << "Error opening the file." << endl;
+			cout << "\tError opening the data file ... Operation unsuccessful" << endl;
 		}
 		else
 		{
@@ -305,10 +325,13 @@ public:
 				if (operation == 'W') // if write operation
 					temp_op = true; // changing access type
 
-				temp_hash.insert(file_id); // inserting file in hashmap
-				temp_hash.requestAccess(file_id, v(user_id, temp_op), priority); // inserting user in hashmap
+				this->insert(file_id); // inserting file in hashmap
+				this->requestAccess(file_id, v(user_id, temp_op), priority); // inserting user in hashmap
 			}
 			infile.close(); // closing file
+			system("cls");
+			cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+			cout << "\tFile read successful" << endl;
 		}
 	}
 };
@@ -329,7 +352,7 @@ void insertfile(hashmap<int, user>& htable)
 	system("cls");
 	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
 	htable.insert(file_id); // calling insert function
-	Sleep(500);
+	Sleep(2000);
 	system("cls");
 }
 void accessfile(hashmap<int, user>& htable)
@@ -424,11 +447,30 @@ void readfile(hashmap<int, user>& htable)
 	Sleep(500);
 	system("cls");
 	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
-	//htable.loadfile(path);
+	htable.loadfile(path); // calling load function
+	Sleep(2000);
+	system("cls");
+}
+void removefile(hashmap<int, user>& htable)
+{
+	// function to validate and insert a file
+	int file_id = 0;
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): ";
+		cin >> file_id;
+	} while (file_id < 5000 || file_id>99999); // validating range
 	Sleep(500);
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	htable.deleteFile(file_id); // calling delete function
+	Sleep(2000);
 	system("cls");
 }
 
+// main menu function
 void menu()
 {
 	hashmap<int, user> repo(11); // creating hash table to work on
@@ -476,7 +518,7 @@ void menu()
 		}
 		case 5:
 		{
-			//insertfile();
+			removefile(repo);
 			break;
 		}
 		case 6:
@@ -484,7 +526,6 @@ void menu()
 			system("cls");
 			cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
 			repo.printTable();
-			system("pause");
 			break;
 		}
 		case 7:
