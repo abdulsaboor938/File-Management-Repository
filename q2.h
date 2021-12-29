@@ -20,6 +20,12 @@ public:
 		this->currentuser.clear();
 		this->waitinglist = nullptr;
 	}
+	~hashitem()
+	{
+		this->currentuser.clear();
+		if (this->waitinglist != nullptr)
+			delete this->waitinglist;
+	}
 	template<class k,class v>
 	friend class hashmap;
 };
@@ -40,6 +46,10 @@ public:
 			cin >> t_size;
 		}
 		this->hasharr.resize(t_size); // resizing vector to defined size
+	}
+	~hashmap()
+	{
+		this->hasharr.clear();
 	}
 
 	void insert(k file_id)
