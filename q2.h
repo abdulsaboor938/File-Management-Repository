@@ -234,20 +234,20 @@ public:
 	{
 		// This function prints hashmap
 		typename list<hashitem<k, v>>::iterator obj; // iterator for traversing array
-		cout << "Current Repository" << endl;
-		cout << "********************************************" << endl;
+		cout << "\tCurrent Repository" << endl;
+		cout << "\t********************************************" << endl << endl;
 		for (int i = 0; i < this->hasharr.size(); i++)
 		{
 			if (!this->hasharr[i].empty()) // if node is not empty
 			{
 				for (obj = this->hasharr[i].begin(); obj != this->hasharr[i].end(); obj++)
 				{
-					cout << "H" << i + 1 << "-> File:" << obj->fileid << " ... \n\tAccess granted to: ";
+					cout << "\tH" << i + 1 << "-> File:" << obj->fileid << " ... \n\tAccess granted to: ";
 					if (obj->currentuser.empty()) // if no user has access
 					{
 						cout << "None" << endl;
-						cout << "\tNext User:None" << endl;
-						cout << "\tWaiting:None" << endl;
+						cout << "\t\tNext User:None" << endl;
+						cout << "\t\tWaiting:None" << endl;
 					}
 					else
 					{
@@ -265,11 +265,11 @@ public:
 						cout << endl;
 
 						// code to print next user from priority queue
-						cout << "\tNext User:";
+						cout << "\t\tNext User:";
 						if (obj->waitinglist->isEmpty()) // checking if empty queue
 						{
 							cout << "None" << endl;
-							cout << "\tWaiting:None" << endl;
+							cout << "\t\tWaiting:None" << endl;
 						}
 						else // if queue is not empty
 						{
@@ -279,7 +279,7 @@ public:
 								cout << "(write)" << endl;
 							else
 								cout << "(read)" << endl;
-							cout << "\tWaiting:" << obj->waitinglist->heapsize() << endl; // printing waiting users
+							cout << "\t\tWaiting:" << obj->waitinglist->heapsize() << endl; // printing waiting users
 						}
 					}
 					cout << endl;
@@ -340,7 +340,61 @@ void insertfile(hashmap<int, user>& htable)
 	Sleep(500);
 	system("cls");
 	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
-	htable.insert(file_id); // calling inser function
+	htable.insert(file_id); // calling insert function
+	Sleep(500);
+	system("cls");
+}
+void accessfile(hashmap<int, user>& htable)
+{
+	// function to validate and insert a file
+	int file_id = 0;
+	int user_id = 0;
+	int priority = 0;
+	char operation;
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): ";
+		cin >> file_id;
+	} while (file_id < 5000 || file_id>99999); // validating range of fileid
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): " << file_id << endl;
+		cout << "\tEnter user ID (0 - 10000): ";
+		cin >> user_id;
+	} while (user_id < 0 || user_id>10000); // validating range of userid
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): " << file_id << endl;
+		cout << "\tEnter user ID (0 - 10000): " << user_id << endl;
+		cout << "\tEnter access type (r=read, w=write): ";
+		cin >> operation;
+	} while (!(operation=='r' || operation=='w')); // validating operation type
+	bool temp_op = false;
+	if (operation == 'w')
+		temp_op = true;
+	// converted to boolean type
+
+	do
+	{
+		system("cls");
+		cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+		cout << "\tEnter file ID (5000 - 99999): " << file_id << endl;
+		cout << "\tEnter user ID (0 - 10000): ";
+		cout << "\tEnter access type (r=read, w=write): " << operation << endl;
+		cout << "\tEnter priority (0=min - 100=max): ";
+		cin >> priority;
+	} while (priority < 0 || priority>100); // validating priority
+
+	Sleep(500);
+	system("cls");
+	cout << "\n\n\t---------------- GITHUB ----------------" << endl << endl;
+	htable.requestAccess(file_id, user(user_id, temp_op), priority);
 	Sleep(500);
 	system("cls");
 }
