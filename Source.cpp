@@ -65,7 +65,7 @@ int main()
 	h1.requestAccess(3, user(12,false), -2);
 	h1.releasefile(3,user(12,false));
 	h1.releasefile(3,user(14,false));
-	h1.releasefile(3,user(12,false));
+	//h1.releasefile(3,user(12,false));
 	h1.printTable();
 	h1.loadfile("data.txt",h1);
 	h1.printTable();
