@@ -189,6 +189,26 @@ public:
 		}
 		cout << "\nFile with id: " << file_id << " not found\n" << endl; // prompt if file is not found
 	}
+	void deleteFile(k file_id)
+	{
+		// this function deletes a file if it is not in use
+		int index = file_id % this->hasharr.size();
+		typename list<hashitem<k, v>> ::iterator i = this->hasharr[index].begin(); // making an iterator
+		for (; i != this->hasharr[index].end(); i++) // loop in list
+		{
+			if (i->fileid == file_id) // checking if file ids match
+			{
+				// checking if currentuser are empty
+				if (i->currentuser.empty())
+				{
+					// deleting file
+					this->hasharr[index].erase(i);
+					return;
+				}
+			}
+		}
+
+	}
 	void printTable()
 	{
 		// This function prints hashmap
