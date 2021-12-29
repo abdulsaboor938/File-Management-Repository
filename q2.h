@@ -147,44 +147,40 @@ public:
 						break;
 					}
 				}
-				//bool check = false;
-				//// code to check ay read access user
-				//v c_user = i->currentuser.front(); // extracting top of currentuser
-				//v h_user = i->waitinglist->extractMax().value; // extracting top of heap
-				//if (c_user.operation == false && h_user.operation == false) // if both user want to read
-				//{
-				//	check = true; // we should allow access
-				//}
 
 				// do all this work when last user is removed
-				if (i->currentuser.empty())
+				if (!i->waitinglist->isEmpty()) // if waiting list is not empty and curretn is empty
 				{
-					if (!i->waitinglist->isEmpty()) // if waiting list is not empty
+					heapItem<k, v> temp;
+					if (i->currentuser.empty())
 					{
-						heapItem<k,v> temp = i->waitinglist->extractMax(); // extracting maximum user
+						temp = i->waitinglist->extractMax(); // extracting maximum user
 						i->currentuser.push_back(temp.value); // pushing in vector
+					}
+					else
+					{
+						temp.value = i->currentuser.front(); // front of curretn user
+					}
 
-						// code to read further users (if any)
-						if (!temp.value.operation) // if operation of current user was read
+					// code to read further users (if any)
+					if (!temp.value.operation) // if operation of current user was read
+					{
+						// finding and pushing all read users
+						bool check = true;
+						while (!i->waitinglist->isEmpty() && check) // while not empty and read
 						{
-							// finding and pushing all read users
-							bool check = true;
-							while (!i->waitinglist->isEmpty() && check) // while not empty and read
+							temp = i->waitinglist->findMax(); // getting maximum value
+							if (temp.value.operation) // if write operation
 							{
-								temp = i->waitinglist->findMax(); // getting maximum value
-								if (temp.value.operation) // if write operation
-								{
-									check = false; // to break the loop
-								}
-								else
-								{
-									temp = i->waitinglist->extractMax(); // extracting maximum value
-									i->currentuser.push_back(temp.value); // pushing back maximum value
-								}
-								// going back to loop
+								check = false; // to break the loop
 							}
+							else
+							{
+								temp = i->waitinglist->extractMax(); // extracting maximum value
+								i->currentuser.push_back(temp.value); // pushing back maximum value
+							}
+							// going back to loop
 						}
-
 					}
 				}
 				

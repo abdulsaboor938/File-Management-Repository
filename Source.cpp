@@ -64,6 +64,7 @@ int main()
 	h1.requestAccess(3, user(12,false), -2);
 	h1.requestAccess(3, user(12,false), -2);
 	h1.releasefile(3,user(12,false));
+	h1.requestAccess(3, user(17, false), -1);
 	h1.releasefile(3,user(14,false));
 	//h1.releasefile(3,user(12,false));
 	h1.printTable();
